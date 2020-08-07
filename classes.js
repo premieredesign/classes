@@ -1,51 +1,110 @@
-const vehicles = [
-  {
-    make: "Ford",
-    model: "Mustang",
-  },
-  {
-    make: "Chrysler",
-    model: "Jeep",
-  },
-  {
-    make: "Dodge",
-    model: "Ram",
-  },
-  {
-    make: "Rover",
-    model: "Range Rover",
-  },
-];
+class Inventory {
+  constructor() {}
 
-class NewDealership {
-  constructor(cars) {
-    this.inventory = cars;
-  }
+  cars = [
+    {
+      name: "Ford",
+      model: "Mustang",
+    },
+    {
+      name: "Ford",
+      model: "F-150",
+    },
+    {
+      name: "Ford",
+      model: "Taurus",
+    },
+    {
+      name: "Ford",
+      model: "Fushion",
+    },
+    {
+      name: "Ford",
+      model: "Bronco",
+    },
+  ];
 
-  // Get List of Cars in Inventory
+  // Get List of Inventory
   getInventory() {
-    console.log("cars", this.inventory);
+    console.log("This is what we have", this.cars);
   }
 
-  // Add Car to Inventory
-  addCarToInventory(make, model) {
-    this.inventory.push({ make, model });
+  // Add to Inventory
+  addToInventory(cars) {
+    this.cars.push(cars);
   }
 
-  // Remove Car from Inventory
-  removeCarFromInventory(make, model) {
-    for (let i = 0; i < this.inventory.length; i++) {
-      if (this.inventory[i].model === model) {
-        this.inventory.splice(i, 1);
-      }
-    }
-    console.log("This is New Inventory", this.inventory);
+  // Remove from Inventory
+  removeFromInventory(car) {
+    const index = this.cars.findIndex((v) => v.model === car.model);
+    this.cars.splice(index, 1);
   }
 }
 
-const fordDealership = new NewDealership(vehicles);
-console.log("Ford Dealership", fordDealership);
+class RemoteInventory {}
 
-// fordDealership.addCarToInventory("Ford", "Viper");
-// fordDealership.getInventory();
-fordDealership.removeCarFromInventory("Rover", "Range Rover");
+class FordDealership extends Inventory {
+  constructor() {
+    super(); // Give me access to the Parent
+    this.carInventory = this.cars;
+  }
+
+  getInventory() {
+    return this.carInventory;
+  }
+
+  addToInventory(...car) {
+    this.carInventory.push(...car);
+    console.log("Ford New Cars", this.carInventory);
+  }
+}
+
+class LincolnDealership extends Inventory {
+  constructor() {
+    super();
+    super.addToInventory();
+  }
+}
+
+// const inventory = new Inventory();
+// const fordDealership = new FordDealership();
+// const lincolnDealership = new LincolnDealership();
+// inventory.getInventory();
+// fordDealership.addToInventory({
+//   name: "Ford",
+//   model: "Viper",
+// });
+// fordDealership.addToInventory(
+//   {
+//     name: "Lincoln",
+//     model: "Navigator",
+//   },
+//   {
+//     name: "Lincoln",
+//     model: "LX",
+//   },
+//   {
+//     name: "Lincoln",
+//     model: "LR",
+//   }
+// );
+// lincolnDealership.removeFromInventory({
+//   name: "Ford",
+//   model: "Bronco",
+// });
+
+// Spread
+const intructors = ["Clinton", "Henry"];
+
+const students = {
+  name: "Clinton",
+  age: "40",
+};
+
+const printStudents = (students) => {
+  const { name, age } = students;
+
+  const sayName = () => console.log("My name", name);
+  const sayAge = () => console.log("My age", age);
+};
+printStudents(students);
