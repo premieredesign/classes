@@ -1,110 +1,104 @@
-class Inventory {
-  constructor() {}
+// Import
+// Properties
+// Constructor()
+// Methods
+// Export
 
-  cars = [
-    {
-      name: "Ford",
-      model: "Mustang",
-    },
-    {
-      name: "Ford",
-      model: "F-150",
-    },
-    {
-      name: "Ford",
-      model: "Taurus",
-    },
-    {
-      name: "Ford",
-      model: "Fushion",
-    },
-    {
-      name: "Ford",
-      model: "Bronco",
-    },
-  ];
+// CRUD - Create, Read, Update, Delete
 
-  // Get List of Inventory
-  getInventory() {
-    console.log("This is what we have", this.cars);
-  }
-
-  // Add to Inventory
-  addToInventory(cars) {
-    this.cars.push(cars);
-  }
-
-  // Remove from Inventory
-  removeFromInventory(car) {
-    const index = this.cars.findIndex((v) => v.model === car.model);
-    this.cars.splice(index, 1);
-  }
-}
-
-class RemoteInventory {}
-
-class FordDealership extends Inventory {
+const fs = require("fs");
+// import fs from 'fs';
+class Employee {
+  employeeDatabase = [];
   constructor() {
-    super(); // Give me access to the Parent
-    this.carInventory = this.cars;
+    // Create this when the Class get created
+    // Or
+    // Call this when Class get created
   }
 
-  getInventory() {
-    return this.carInventory;
+  // Add Employee
+  addNewEmployee(newEmployee) {
+    let employeeObj = {
+      id: this.employeeDatabase.length + 1,
+      ...newEmployee,
+    };
+    this.employeeDatabase.push(employeeObj);
+    fs.writeFile(
+      "./employees.json",
+      JSON.stringify(this.employeeDatabase),
+      (err) => {
+        if (err) {
+          console.error("Err", err);
+        }
+      }
+    );
+    // console.log("New Employee(s) Add [+]", this.employeeDatabase);
   }
 
-  addToInventory(...car) {
-    this.carInventory.push(...car);
-    console.log("Ford New Cars", this.carInventory);
+  findAllEmployeeWith(field, value) {
+    // Look at what you have to work with i.e  (Parameter) and see what you can match/ find with within your database
+    // i.e Apple Apples | Orange Oranges
+    const employees = this.employeeDatabase.filter((x) => x[field] === value);
+    // console.log("Here you go", employees);
+  }
+
+  getAllEmployeeInfo() {
+    // Anytime something sasy all w/o specific, just return the whole dataset
+    return this.employeeDatabase;
+  }
+
+  getSpecificEmployeeInfo(employeeId) {
+    // Long Way
+    // for (let i = 0; i < this.employeeDatabase.length; i++) {
+    //   if (this.employeeDatabase[i].id === employeeId) {
+    //     this.employeeDatabase[i];
+    //   }
+    // }
+
+    // Short Way
+    const employee = this.employeeDatabase.find((x) => x.id === employeeId);
+    return employee;
+  }
+
+  updateEmployeeInfo(employeeId, field, newValue) {
+    // Long Way
+    // for (let i = 0; i < this.employeeDatabase.length; i++) {
+    //   if (this.employeeDatabase[i].id === employeeId) {
+    //     this.employeeDatabase[i][field] = newValue;
+    //   }
+    // }
+
+    // Short Way
+    const employee = this.getSpecificEmployeeInfo(employeeId);
+    employee[field] = newValue;
+    console.log("Updated To", this.employeeDatabase);
+  }
+
+  deleteEmployee(employId) {
+    const index = this.employeeDatabase.findIndex((x) => x.id === employId);
+    this.employeeDatabase.splice(index, 1);
+    console.log("emp", employee);
   }
 }
 
-class LincolnDealership extends Inventory {
-  constructor() {
-    super();
-    super.addToInventory();
-  }
-}
-
-// const inventory = new Inventory();
-// const fordDealership = new FordDealership();
-// const lincolnDealership = new LincolnDealership();
-// inventory.getInventory();
-// fordDealership.addToInventory({
-//   name: "Ford",
-//   model: "Viper",
-// });
-// fordDealership.addToInventory(
-//   {
-//     name: "Lincoln",
-//     model: "Navigator",
-//   },
-//   {
-//     name: "Lincoln",
-//     model: "LX",
-//   },
-//   {
-//     name: "Lincoln",
-//     model: "LR",
-//   }
-// );
-// lincolnDealership.removeFromInventory({
-//   name: "Ford",
-//   model: "Bronco",
-// });
-
-// Spread
-const intructors = ["Clinton", "Henry"];
-
-const students = {
-  name: "Clinton",
-  age: "40",
-};
-
-const printStudents = (students) => {
-  const { name, age } = students;
-
-  const sayName = () => console.log("My name", name);
-  const sayAge = () => console.log("My age", age);
-};
-printStudents(students);
+const employee = new Employee();
+employee.addNewEmployee({
+  firstName: "Clinton",
+  lastName: "Johnson",
+  title: "Cashier",
+  status: "Active",
+});
+employee.addNewEmployee({
+  firstName: "Britani",
+  lastName: "Johnson",
+  title: "Manager",
+});
+employee.addNewEmployee({
+  firstName: "Jesse",
+  lastName: "James",
+  title: "Cashier",
+});
+// employee.findAllEmployeeWith("lastName", "Johnson");
+// employee.updateEmployeeInfo(2, "title", "Manager");
+// employee.updateEmployeeInfo(1, "lastName", "Edwards");
+employee.deleteEmployee(1);
